@@ -8,10 +8,8 @@ using Akasha.Events;
 using Akasha.Infrastructure;
 using Akasha.Aggregators;
 
-
 namespace Akasha
 {
-
     [BepInPlugin("Akasha", "com.chiester3105.akasha", "1.0.0")]
 
     public class AkashaPlugin : BaseUnityPlugin
@@ -19,7 +17,6 @@ namespace Akasha
         public static ManualLogSource Logger { get; private set; }
         public static ShockwaveWeaponTypeStorage ShockwaveWeaponStorage = new();
         public static UnitWeaponLogStorage WeaponStorage = new();
-
 
         private void OnApplicationQuit()
         {
@@ -31,10 +28,10 @@ namespace Akasha
         {
             try
             {
-                AkashaPlugin.Logger = base.Logger;
                 var harmony = new Harmony("Akasha");
-
                 harmony.PatchAll();
+
+                AkashaPlugin.Logger = base.Logger;
                 Logger.LogInfo("Patches applied");
 
 
