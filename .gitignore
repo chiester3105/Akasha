@@ -1,0 +1,30 @@
+# Main
+/bin
+/obj
+/packages
+App.config
+
+# Visual studio
+/.vs
+*.user
+*.suo
+*.userosscache
+
+# Jetbrains
+/.idea/
+_ReSharper.Caches/
+*.DotSettings.user
+*.DotSettings
+
+# Linux trash from my laptop
+.DS_Store
+Thumbs.db
+
+# Temp files if they are appearing somehow
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Local props. Examples in files named like *PropsExample.props
+Akasha.props
