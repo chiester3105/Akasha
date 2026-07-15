@@ -1,4 +1,4 @@
-# Requirements (Should be automatically be installed by using info from packages.config)
+# Requirements (Should be automatically installed by using info from packages.config)
 ## Confluent.Kafka
 ## AssemblyPublicizer
 ## protobuf-net
