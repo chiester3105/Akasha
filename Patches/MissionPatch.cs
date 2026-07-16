@@ -13,7 +13,7 @@ namespace Akasha
         public static void Prefix(Mission __instance, MissionKey key)
         {
             var eventBus = ServiceLocator.Resolve<IEventBus>();
-            eventBus.Publish<MissionLoadedEvent>(new MissionLoadedEvent(__instance.Name));
+            eventBus.Publish<MissionLoadedEvent>(new MissionLoadedEvent(__instance.Name, __instance.MapKey.Path));
         }
     }
 }

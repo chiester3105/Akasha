@@ -13,18 +13,16 @@ namespace Akasha.Aggregators
 
         public PlayerSavedDataManager(IEventBus eventBus) => _eventBus = eventBus;
         
-
-        public Dictionary<FactionHQ, List<PlayerSavedData>> savedData = new Dictionary<FactionHQ, List<PlayerSavedData>>();
+        private Dictionary<ulong,  PlayerSavedData> _savedData = new();
         public void Initialize()
         {
             _eventBus.Subscribe<PlayerDisconnectedEvent>(Save);
             _eventBus.Subscribe<MissionLoadedEvent>(Clear);
         }
        
-        public List<PlayerSavedData> GetSavedPlayersByHQ(FactionHQ HQ)
+        public List<PlayerSavedData> GetPlayers()
         {
-            List<PlayerSavedData> data = savedData.TryGetValue(HQ, out var savedPlayers) ? savedPlayers.OrderByDescending(p => p.Score).ToList() : new List<PlayerSavedData>();
-            return data;
+            return _savedData.Values.ToList();
         }
         public void SaveAllPlayers()
         {
@@ -40,7 +38,7 @@ namespace Akasha.Aggregators
 
         public void Clear(MissionLoadedEvent e)
         {
-            savedData.Clear();
+            _savedData.Clear();
         }
         private void Save(PlayerDisconnectedEvent e)
         {
@@ -63,23 +61,7 @@ namespace Akasha.Aggregators
                     player.HQ
                 );
 
-
-                int index = savedData.ContainsKey(player.HQ)
-                           ? savedData[player.HQ].FindIndex(x => x.SteamID == player.SteamID)
-                           : -1;
-
-                if (index != -1 && player.HQ != null)
-                {
-                    savedData[player.HQ][index] = data;
-                }
-                else
-                {
-                    if (!savedData.ContainsKey(player.HQ))
-                    {
-                        savedData.Add(player.HQ, new List<PlayerSavedData>());
-                    }
-                    savedData[player.HQ].Add(data);
-                }
+                _savedData[data.SteamID] = data;
             }
             catch (Exception ex)
             {

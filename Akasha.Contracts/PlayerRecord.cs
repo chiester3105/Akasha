@@ -10,5 +10,6 @@ namespace Akasha.Contracts
         [ProtoMember(2)] public List<SortieRecord> Sorties { get; set; }
         [ProtoMember(3)] public string Faction { get; set; }
         [ProtoMember(4)] public float Score { get; set; }
+        [ProtoMember(5)] public string PlayerName { get; set; }
     }
 }

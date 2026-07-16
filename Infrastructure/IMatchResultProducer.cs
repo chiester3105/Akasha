@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Akasha.Data;
+using Akasha.Contracts;
 
-namespace Akasha.Infrastructure.Kafka
+namespace Akasha.Infrastructure
 {
     /// <summary>
     /// Abstraction for handling match results.
@@ -11,11 +11,11 @@ namespace Akasha.Infrastructure.Kafka
     {
         /// <summary>
         /// Asynchronously sends data somewhere.
-        /// Implementation decides how to handle MatchResult (protobuf, json, etc).
+        /// Implementation decides how to handle result (protobuf, json, etc).
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="record"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task SendAsync(MatchResult result, CancellationToken token = default);
+        Task SendAsync(MatchRecord record, CancellationToken token = default);
     }
 }

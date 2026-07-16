@@ -34,7 +34,7 @@ namespace Akasha.Mapping
             contract.PlayerId = data.SteamID;
             contract.Faction = data.FactionName;
             contract.Score = data.Score;
-
+            contract.PlayerName = data.Name;
             contract.Sorties = sorties.ToSortieRecords();
         }
 
@@ -58,6 +58,17 @@ namespace Akasha.Mapping
                 return record;
             }).ToList();
         }
-       // public static void MapContract(this Match)
+
+        public static List<PlayerRecord> CreatePlayerRecords(this ILookup<ulong, Sortie> lookup, IEnumerable<PlayerSavedData> players)
+        {
+            var records = players.Select(p =>
+            {
+                var record = new PlayerRecord();
+                record.MapContract(lookup[p.SteamID], p);
+                return record;
+            }).ToList();
+            return records;
+        }
+
     }
 }

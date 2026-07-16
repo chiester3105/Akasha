@@ -26,8 +26,6 @@ namespace Akasha.Data
 
         public PlayerAircraftInfo selfInfo;
 
-        public SavedPlayerData savedPlayerData;
-
         public float JammingAmount { get; private set; } = 0f;
 
         public int DetectedTargets { get; private set; } = 0;

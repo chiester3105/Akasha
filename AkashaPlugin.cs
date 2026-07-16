@@ -7,6 +7,7 @@ using Akasha.WeaponLogging;
 using Akasha.Events;
 using Akasha.Infrastructure;
 using Akasha.Aggregators;
+using Akasha.Infrastructure.Kafka;
 
 namespace Akasha
 {
@@ -18,6 +19,8 @@ namespace Akasha
         public static ShockwaveWeaponTypeStorage ShockwaveWeaponStorage = new();
         public static UnitWeaponLogStorage WeaponStorage = new();
 
+        //inject from env vars 
+        public static string ServerId { get; private set; }
         private void OnApplicationQuit()
         {
             AkashaPlugin.Logger.LogWarning("OnApplicationQuit");
@@ -34,6 +37,7 @@ namespace Akasha
                 AkashaPlugin.Logger = base.Logger;
                 Logger.LogInfo("Patches applied");
 
+                ServerId = Config.Bind<string>("Enviroment", "ServerId", "SERVER", "Unique server id").Value;
 
                 var eventBus = new EventBus();
                 ServiceLocator.Register<IEventBus>(eventBus);
@@ -44,10 +48,15 @@ namespace Akasha
                 var playerDataManager = new PlayerSavedDataManager(eventBus);
                 playerDataManager.Initialize();
 
-                var matchAggregator = new MatchResultAggregator(eventBus, sortieManager, playerDataManager);
-                sortieManager.Initialize();
+                var bootstrapServers = Config.Bind<string>("Kafka", "BootstrapServers", "localhost:9092", "Kafka bootstrap server").Value;
+                var topic = Config.Bind<string>("Kafka", "Topic", "match-results", "Kafka topic for match results").Value;
+                var producer = new KafkaMatchResultProducer(bootstrapServers, topic, ServerId);
 
-                Logger.LogInfo("Plugin loaded");
+
+                var matchAggregator = new MatchResultAggregator(eventBus, sortieManager, playerDataManager, producer);
+                matchAggregator.Initialize();
+
+                Logger.LogInfo("Akasha loaded successfuly.");
             }
             catch (Exception ex)
             {
