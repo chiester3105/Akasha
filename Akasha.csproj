@@ -57,6 +57,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Akasha.Contracts\**" />
+    <EmbeddedResource Remove="Akasha.Contracts\**" />
+    <None Remove="Akasha.Contracts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" />
     <PackageReference Include="Confluent.Kafka" Version="2.15.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.1" />
@@ -443,6 +449,10 @@
 	
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="Akasha.Contracts\Akasha.Contracts.csproj" />
   </ItemGroup>
 
   <Target Name="DeployToGame" AfterTargets="Build">

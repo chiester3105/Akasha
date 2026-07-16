@@ -9,10 +9,9 @@ namespace Akasha.Data
 
         public List<WeaponInfo> weaponsInfo = new List<WeaponInfo>();
         public string killedByWeapon { get; private set; }
-        public bool IsParachuted { get; private set; }
         public virtual void CopyUnitInfo(Unit unit)
         {
-            UnitName = unit.unitName;
+            UnitName = unit.definition.unitName;
             persistentID = unit.persistentID;
 
             foreach (WeaponStation station in unit.weaponStations)

@@ -9,50 +9,50 @@ namespace Akasha.Data
 {
     public class Sortie
     {
-        public Aircraft aircraft {  get; private set; }
-        public DateTime sortieStartTime { get; private set; }
-        public DateTime sortieEndTime { get; private set; }
-        public int sortieIdx { get; private set; }
+        public Aircraft Aircraft {  get; private set; }
+        public DateTime SortieStartTime { get; private set; }
+        public DateTime SortieEndTime { get; private set; }
+        public int SortieIdx { get; private set; }
 
-        public TimeSpan elapsed;
+        public TimeSpan Elapsed { get; private set; }
 
-        public EndReasons _sortieEndReason;
+        public EndReasons EndReason { get; private set; }
 
         private bool _isSortieEnded = false;
 
-        public List<UnitInfo> killedUnits = new List<UnitInfo>();
+        public List<UnitInfo> KilledUnits { get; private set; } = new List<UnitInfo>();
 
-        public float explodedNukes { get; private set; }
+        public float ExplodedNukes { get; private set; }
 
         public PlayerAircraftInfo selfInfo;
 
         public SavedPlayerData savedPlayerData;
 
-        public float jammingAmount = 0f;
+        public float JammingAmount { get; private set; } = 0f;
 
-        public int detectedTargets = 0;
+        public int DetectedTargets { get; private set; } = 0;
 
         public Sortie(Aircraft aircraft, int sortieSerialNumber) 
         {
-            this.aircraft = aircraft;
-            this.sortieIdx = sortieSerialNumber;
-            sortieStartTime = DateTime.UtcNow;
+            this.Aircraft = aircraft;
+            this.SortieIdx = sortieSerialNumber;
+            SortieStartTime = DateTime.UtcNow;
             SetSelfInfo();
         }
 
         public void AddJamming()
         {
-            jammingAmount += Time.deltaTime;
+            JammingAmount += Time.deltaTime;
         }
 
         public void AddDetectedTarget()
         {
-            detectedTargets++;
+            DetectedTargets++;
         }
 
         public void AddNuke()
         {
-            explodedNukes++;
+            ExplodedNukes++;
         }
         public override string ToString()
         {
@@ -63,19 +63,19 @@ namespace Akasha.Data
         {
             if (!_isSortieEnded) 
             {
-                _sortieEndReason = sortieEndReason;
-                sortieEndTime = DateTime.UtcNow;
+                EndReason = sortieEndReason;
+                SortieEndTime = DateTime.UtcNow;
                 _isSortieEnded = true;
-                elapsed = sortieEndTime - sortieStartTime;
+                Elapsed = SortieEndTime - SortieStartTime;
             }
         }
 
         public void AddKill(PersistentUnit unit, string weaponName = null)
         {
-            if (aircraft.NetworkHQ == unit.unit.NetworkHQ) { return; }
+            if (Aircraft.NetworkHQ == unit.unit.NetworkHQ) { return; }
             UnitInfo unitInfo = CopyUnitInfo(unit.unit);
             if (weaponName != null) unitInfo.SetKillWeapon(weaponName);
-            killedUnits.Add(unitInfo);
+            KilledUnits.Add(unitInfo);
         }
       
         public void DetectKilled(PersistentID killerPersistentID)
@@ -128,7 +128,7 @@ namespace Akasha.Data
 
         private void SetSelfInfo()
         {
-            selfInfo = (PlayerAircraftInfo)CopyUnitInfo(aircraft);    
+            selfInfo = (PlayerAircraftInfo)CopyUnitInfo(Aircraft);    
         }
          
     }

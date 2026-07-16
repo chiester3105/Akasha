@@ -1,6 +1,6 @@
 # TODO
 - [ ] Finish MatchResultAggregator (build MatchResult from SortieManager + PlayerSavedDataManager)
-- [ ] Implement IMatchResultProducer (Kafka)
+- [ ] Implement IMatchResultProducer (Kafka + protobuf)
 - [ ] Add integration tests
 - [ ] Refactor Sortie to pure DTO
 - [ ] Write my own transpiler for weapon logging instead of using somebody's implementation

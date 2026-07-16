@@ -1,4 +1,5 @@
-﻿using Akasha.Events;
+﻿using Akasha.Data;
+using Akasha.Events;
 using NuclearOption.SavedMission.ObjectiveV2.Outcomes;
 
 namespace Akasha.Aggregators
