@@ -9,9 +9,15 @@
 ## Architecture
 
 Nuclear Option Server (with Akasha) 
+
        ↓ 
+
 Kafka (topic: match-results) 
+
        ↓ 
+
 Irminsul (.NET Worker) 
+
        ↓ 
+
 PostgreSQL
