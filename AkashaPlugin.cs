@@ -21,6 +21,7 @@ namespace Akasha
 
         //inject from env vars 
         public static string ServerId { get; private set; }
+        public static string MessagesPath { get; private set; }
         private void OnApplicationQuit()
         {
             AkashaPlugin.Logger.LogWarning("OnApplicationQuit");
@@ -38,6 +39,7 @@ namespace Akasha
                 Logger.LogInfo("Patches applied");
 
                 ServerId = Config.Bind<string>("Enviroment", "ServerId", "SERVER", "Unique server id").Value;
+                MessagesPath = Config.Bind<string>("Enviroment", "Messages path", "/fallbacks", "Path for messages that failed to send").Value;
 
                 var eventBus = new EventBus();
                 ServiceLocator.Register<IEventBus>(eventBus);

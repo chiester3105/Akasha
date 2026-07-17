@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akasha.Contracts;
 using Confluent.Kafka;
+using Cysharp.Threading.Tasks;
 using ProtoBuf;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ namespace Akasha.Infrastructure.Kafka
             if (record == null) throw new ArgumentNullException(nameof(record));
             if (_disposed) throw new ObjectDisposedException(nameof(KafkaMatchResultProducer));
 
-            //serialization
+            //protobuf serialization
             byte[] payload;
             try
             {
@@ -63,6 +64,7 @@ namespace Akasha.Infrastructure.Kafka
                 Timestamp = new Timestamp(DateTime.UtcNow)
             };
 
+            //sending msg
             try
             {
                 var deliveryResult = await _producer.ProduceAsync(_topic, msg, token);
@@ -75,7 +77,8 @@ namespace Akasha.Infrastructure.Kafka
             {
                 AkashaPlugin.Logger.LogError($"Failed to send match: {record.MatchId}." +
                     $"\nException: {ex}");
-                SaveLocally(record);
+
+                SaveLocally(record.MatchId, payload, token).Forget();
             }
         }
         public void Dispose()
@@ -86,9 +89,33 @@ namespace Akasha.Infrastructure.Kafka
             _disposed = true;
         }
 
-        public void SaveLocally(MatchRecord record)
+        //fallback 
+        private async UniTask SaveLocally(string id, byte[] data, CancellationToken ct)
         {
+            try
+            {
+                await UniTask.RunOnThreadPool(() =>
+                {
+                    var fallbackDir = AkashaPlugin.MessagesPath;
 
+                    if (!Directory.Exists(fallbackDir))
+                    {
+                        Directory.CreateDirectory(fallbackDir);
+                    }
+
+                    var fileName = $"{id}_{DateTime.UtcNow:yyyyMMddHHmmss}.bin";
+                    var path = Path.Combine(fallbackDir, fileName);
+
+                    File.WriteAllBytes(path, data);
+                }, cancellationToken: ct);
+
+                AkashaPlugin.Logger.LogWarning($"Fallback saved for match {id}");
+            }
+            catch (Exception ex)
+            {
+                AkashaPlugin.Logger.LogError($"Failed to save fallback for match {id}:\n" +
+                    $"{ex}");
+            }
         }
     }
 }
