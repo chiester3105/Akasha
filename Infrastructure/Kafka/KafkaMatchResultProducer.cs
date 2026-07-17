@@ -39,22 +39,32 @@ namespace Akasha.Infrastructure.Kafka
             if (record == null) throw new ArgumentNullException(nameof(record));
             if (_disposed) throw new ObjectDisposedException(nameof(KafkaMatchResultProducer));
 
+            //serialization
+            byte[] payload;
             try
             {
-                byte[] bytes;
                 using (var ms = new MemoryStream())
                 {
                     Serializer.Serialize(ms, record);
-                    bytes = ms.ToArray();
+                    payload = ms.ToArray();
                 }
+            }
+            catch (Exception ex)
+            {
+                AkashaPlugin.Logger.LogError($"Serialization failed: {ex}");
+                throw;
+            }
 
-                var msg = new Message<string, byte[]>
-                {
-                    Key = record.MatchId,
-                    Value = bytes,
-                    Timestamp = new Timestamp(DateTime.UtcNow)
-                };
+            //kafka msg
+            var msg = new Message<string, byte[]>
+            {
+                Key = record.MatchId,
+                Value = payload,
+                Timestamp = new Timestamp(DateTime.UtcNow)
+            };
 
+            try
+            {
                 var deliveryResult = await _producer.ProduceAsync(_topic, msg, token);
 
                 AkashaPlugin.Logger.LogInfo($"Match sent: {record.MatchId}," +
