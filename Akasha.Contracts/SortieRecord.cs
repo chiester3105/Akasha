@@ -12,6 +12,8 @@ namespace Akasha.Contracts
         [ProtoMember(4)] public double LiveTime { get; set; }
         [ProtoMember(5)] public float JammingAmount { get; set; } // jamming pod only (NOT ECM!)
         [ProtoMember(6)] public int DetectedTargets { get; set; }
-
+        [ProtoMember(7)] public string KilledByWeapon { get; set; }
+        [ProtoMember(8)] public string KilledByUnit { get; set; }
+        [ProtoMember(9)] public ulong? KilledByPlayer {  get; set; }
     }
 }

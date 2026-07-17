@@ -88,7 +88,7 @@ namespace Akasha.Aggregators
                 if (persistentUnitKilled.player != null
                     && playerAircraftsInfo.TryGetValue(persistentUnitKilled.id, out var sortie2))
                 {
-                    sortie2.DetectKilled(killerPersistentID);
+                    sortie2.DetectKilled(killerPersistentID, e.weaponName);
                 }
             }
             catch (Exception ex)

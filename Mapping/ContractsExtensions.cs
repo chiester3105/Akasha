@@ -16,11 +16,15 @@ namespace Akasha.Mapping
             contract.DetectedTargets = sortie.DetectedTargets;
 
             contract.Kills = sortie.KilledUnits.ToKillRecords();
+
+            contract.KilledByWeapon = sortie.selfInfo.KilledByWeapon;
+            contract.KilledByPlayer = sortie.selfInfo.KilledByPlayer;
+            contract.KilledByUnit = sortie.selfInfo.KilledByUnit;
         }
 
         public static void MapContract(this KillRecord contract, UnitInfo unit)
         {
-            contract.UsedWeapon = unit.killedByWeapon;
+            contract.UsedWeapon = unit.KilledByWeapon;
             contract.KilledUnit = unit.UnitName;
 
             if(unit is PlayerAircraftInfo player)

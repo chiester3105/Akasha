@@ -5,14 +5,16 @@ namespace Akasha.Data
     public class UnitInfo
     {
         public string UnitName { get; private set; }
-        public PersistentID persistentID { get; private set; }
+        public PersistentID PersistentID { get; private set; }
 
         public List<WeaponInfo> weaponsInfo = new List<WeaponInfo>();
-        public string killedByWeapon { get; private set; }
+        public string KilledByWeapon { get; private set; }
+        public string KilledByUnit { get; private set; }
+        public ulong? KilledByPlayer { get; private set; }
         public virtual void CopyUnitInfo(Unit unit)
         {
             UnitName = unit.definition.unitName;
-            persistentID = unit.persistentID;
+            PersistentID = unit.persistentID;
 
             foreach (WeaponStation station in unit.weaponStations)
             {
@@ -23,9 +25,11 @@ namespace Akasha.Data
                 weaponsInfo.Add(weaponInfo);
             }
         }
-        public void SetKillWeapon(string weaponName)
+        public void SetDeathInfo(string weaponName, string unit, ulong playerId)
         {
-            killedByWeapon = weaponName;
+            KilledByWeapon = weaponName;
+            KilledByUnit = unit;
+            KilledByPlayer = playerId;
         }
         public override string ToString()
         {

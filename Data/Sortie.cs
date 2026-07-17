@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using NuclearOption.Networking;
-using Steamworks;
 using UnityEngine;
 
 namespace Akasha.Data
@@ -72,26 +69,32 @@ namespace Akasha.Data
         {
             if (Aircraft.NetworkHQ == unit.unit.NetworkHQ) { return; }
             UnitInfo unitInfo = CopyUnitInfo(unit.unit);
-            if (weaponName != null) unitInfo.SetKillWeapon(weaponName);
+            ulong id = 0;
+            if (unit.unit is Aircraft a && a.Player != null)
+                id = a.Player.SteamID;
+            if (weaponName != null) unitInfo.SetDeathInfo(weaponName, unit.definition.unitName, id);
             KilledUnits.Add(unitInfo);
         }
       
-        public void DetectKilled(PersistentID killerPersistentID)
+        public void DetectKilled(PersistentID killerPersistentID, string weapon)
         {
-            PersistentUnit persistentUnit;
-            if (UnitRegistry.TryGetPersistentUnit(killerPersistentID, out persistentUnit))
+            if (UnitRegistry.TryGetPersistentUnit(killerPersistentID, out var persistentUnit))
             {
                 Unit unit = persistentUnit.unit;
+                ulong id = 0;
                 if (unit is Aircraft)
                 {
                     Aircraft aircraft = (Aircraft)unit;
                     if (aircraft.Player != null)
                     {
+                        id = aircraft.Player.SteamID;
                         RegisterSortieEnd(EndReasons.killedByPlayer);
                         return;
                     }
                 }
                 RegisterSortieEnd(EndReasons.killedByBot);
+
+                selfInfo.SetDeathInfo(weapon, unit.definition.unitName, id);
             }
             else
             {
