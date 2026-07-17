@@ -6,18 +6,3 @@
 - [ ] Writing .NET worker service to save data to DB.
 - [ ] Writing ASP.NET webAPI for future web site.
 
-## Architecture
-
-Nuclear Option Server (with Akasha) 
-
-       ↓ 
-
-Kafka (topic: match-results) 
-
-       ↓ 
-
-Irminsul (.NET Worker) 
-
-       ↓ 
-
-PostgreSQL
