@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akasha.Contracts;
@@ -115,6 +116,46 @@ namespace Akasha.Infrastructure.Kafka
             {
                 AkashaPlugin.Logger.LogError($"Failed to save fallback for match {id}:\n" +
                     $"{ex}");
+            }
+        }
+
+        public async UniTask Resend()
+        {
+            var path = AkashaPlugin.MessagesPath;
+            var files = Directory.EnumerateFiles(path).ToList();
+
+            if (files.Count == 0) return;
+
+            for(int i = 0; i < files.Count; i++)
+            {
+                var file = files[i];
+                if (!file.EndsWith(".bin")) continue;
+
+                var payload = File.ReadAllBytes(file);
+                var id = file.Split('_')[0];
+
+                var msg = new Message<string, byte[]>
+                {
+                    Key = id,
+                    Value = payload,
+                    Timestamp = new Timestamp(DateTime.UtcNow)
+                };
+
+                try
+                {
+                    var deliveryResult = await _producer.ProduceAsync(_topic, msg);
+
+                    AkashaPlugin.Logger.LogInfo($"Match sent: {id}," +
+                        $"\npartition: {deliveryResult.Partition}" +
+                        $"\noffset: {deliveryResult.Offset}");
+
+                    File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    AkashaPlugin.Logger.LogError($"Failed to send match: {id}." +
+                        $"\nException: {ex}");
+                }
             }
         }
     }

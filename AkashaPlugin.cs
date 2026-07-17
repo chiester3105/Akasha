@@ -8,6 +8,7 @@ using Akasha.Events;
 using Akasha.Infrastructure;
 using Akasha.Aggregators;
 using Akasha.Infrastructure.Kafka;
+using Cysharp.Threading.Tasks;
 
 namespace Akasha
 {
@@ -59,6 +60,8 @@ namespace Akasha
                 matchAggregator.Initialize();
 
                 Logger.LogInfo("Akasha loaded successfuly.");
+
+                this.StartSlowUpdate(300f, Resend);
             }
             catch (Exception ex)
             {
@@ -69,6 +72,15 @@ namespace Akasha
         public static void DebugLog(string message)
         {
 
+        }
+
+        public void Resend()
+        {
+            var producer = ServiceLocator.Resolve<IMatchResultProducer>() as KafkaMatchResultProducer;
+            if (producer != null)
+            {
+                producer.Resend().Forget();
+            }
         }
     }
 }
