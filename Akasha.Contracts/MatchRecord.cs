@@ -14,5 +14,7 @@ namespace Akasha.Contracts
         [ProtoMember(6)] public string MapName { get; set; } //unity scene/world, not mission name
         [ProtoMember(7)] public string MissionName { get; set; }
         [ProtoMember(8)] public string MatchId { get; set; }
+        [ProtoMember(9)] public float PrimevaScore { get; set; }
+        [ProtoMember(10)] public float BoscaliScore { get; set; }
     }
 }

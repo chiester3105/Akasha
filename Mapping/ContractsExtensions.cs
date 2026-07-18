@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Akasha.Contracts;
 using Akasha.Data;
@@ -11,7 +12,8 @@ namespace Akasha.Mapping
         {
             contract.AircraftName = sortie.Aircraft.definition.unitName;
             contract.EndReason = sortie.EndReason.ToString();
-            contract.LiveTime = (sortie.SortieEndTime - sortie.SortieStartTime).TotalSeconds;
+            contract.StartTime = new DateTimeOffset(sortie.SortieStartTime).ToUnixTimeSeconds();
+            contract.EndTime = new DateTimeOffset(sortie.SortieEndTime).ToUnixTimeSeconds();
             contract.JammingAmount = sortie.JammingAmount;
             contract.DetectedTargets = sortie.DetectedTargets;
 
@@ -20,6 +22,8 @@ namespace Akasha.Mapping
             contract.KilledByWeapon = sortie.selfInfo.KilledByWeapon;
             contract.KilledByPlayer = sortie.selfInfo.KilledByPlayer;
             contract.KilledByUnit = sortie.selfInfo.KilledByUnit;
+
+            contract.SortieIdx = sortie.SortieIdx;
         }
 
         public static void MapContract(this KillRecord contract, UnitInfo unit)

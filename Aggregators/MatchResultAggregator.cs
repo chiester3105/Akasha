@@ -48,6 +48,9 @@ namespace Akasha.Aggregators
 
             var playerRecords = sortiesLookup.CreatePlayerRecords(players);
 
+            var primevaScore = FactionRegistry.HqFromName("Primeva").factionScore;
+            var boscaliScore = FactionRegistry.HqFromName("Boscali").factionScore;
+
             var record = new MatchRecord()
             {
                 Winner = winner.faction.factionName,
@@ -57,7 +60,9 @@ namespace Akasha.Aggregators
                 MissionName = _missionName,
                 Players = playerRecords,
                 ServerId = AkashaPlugin.ServerId,
-                MatchId = Guid.NewGuid().ToString()
+                MatchId = Guid.NewGuid().ToString(),
+                PrimevaScore = primevaScore,
+                BoscaliScore = boscaliScore,
             };
 
             _producer.SendAsync(record);
