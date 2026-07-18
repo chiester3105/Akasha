@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akasha", "Akasha.csproj", "{AB7B027A-C00D-4809-A2DD-EC24B1F72573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akasha.Contracts", "Akasha.Contracts\Akasha.Contracts.csproj", "{AD3B4F40-2F35-7049-E3A9-DDCF5AD67A48}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{AB7B027A-C00D-4809-A2DD-EC24B1F72573}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB7B027A-C00D-4809-A2DD-EC24B1F72573}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB7B027A-C00D-4809-A2DD-EC24B1F72573}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD3B4F40-2F35-7049-E3A9-DDCF5AD67A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD3B4F40-2F35-7049-E3A9-DDCF5AD67A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD3B4F40-2F35-7049-E3A9-DDCF5AD67A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD3B4F40-2F35-7049-E3A9-DDCF5AD67A48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

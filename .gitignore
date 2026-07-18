@@ -28,8 +28,9 @@ Thumbs.db
 
 # Local props. Examples in files named like *PropsExample.props
 Akasha.props
+nuget.config
+
+# MISC
 .gitattributes
 
-# Shared
-/Akasha.Contracts/obj
-/Akasha.Contracts/bin
+

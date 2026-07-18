@@ -450,11 +450,12 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <ProjectReference Include="Akasha.Contracts\Akasha.Contracts.csproj" />
-  </ItemGroup>
 
+
+	<ItemGroup>
+		<PackageReference Include="Akasha.Contracts" Version="1.0.3" />
+	</ItemGroup>
+	
   <Target Name="DeployToGame" AfterTargets="Build">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PluginsDir)" SkipUnchangedFiles="false" />
     <Copy Condition="Exists('$(TargetDir)$(TargetName).pdb')" SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(PluginsDir)" SkipUnchangedFiles="false" />
